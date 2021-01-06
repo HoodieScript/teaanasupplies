@@ -46,7 +46,7 @@
 
     <div class="record bg-white border-left col-lg-9">
       <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-link">
+        <li class="nav-link col-lg-8">
           <a
             href="#firsttab"
             class="nav-item text-dark font-weight-bold active"
@@ -57,14 +57,14 @@
             <label>Order</label>
           </a>
         </li>
-        <li class="nav-link">
-          <a
-            href="#secondtab"
-            class="nav-item text-dark font-weight-bold"
-            role="tab"
-            data-toggle="tab"
-          >
-          </a>
+
+        <li class="col-lg-4">
+          <input
+            type="text"
+            v-model="search"
+            class="form-control"
+            placeholder="ex. S0-KVMF1234PLKO345"
+          />
         </li>
       </ul>
 
@@ -79,10 +79,7 @@
                   <th scope="col">Status</th>
                 </tr>
               </thead>
-              <tbody
-                v-for="(activeorder, idx) in account.supply_orders"
-                :key="idx"
-              >
+              <tbody v-for="(activeorder, idx) in normalfilter" :key="idx">
                 <tr class="mt-2 shadow-sm" style="border-radius: 20px">
                   <td>{{ activeorder.uid }}</td>
                   <td>{{ activeorder.total }}</td>
@@ -119,16 +116,7 @@ export default {
       status: null,
       total: null,
 
-      options1: [
-        { value: null, text: "Status" },
-        { value: 1, text: "Canceled" },
-        { value: 2, text: "Delivered" },
-      ],
-      options2: [
-        { value: null, text: "Order by" },
-        { value: "asc", text: "Low to High" },
-        { value: "desc", text: "High to Low" },
-      ],
+      search: "",
     };
   },
   async created() {
@@ -153,16 +141,21 @@ export default {
 
     getActiveOrders: async function () {
       let response = await axios.get(
-        "https://api.tea-ana.com/v1/auth/profile/supplies?status=canceled",
+        "https://api.tea-ana.com/v1/auth/profile/supplies",
         {
           withCredentials: true,
         }
       );
       this.activeorders = response.data.user;
-      console.log(this.pastorders);
+      console.log(this.activeorders);
     },
   },
   computed: {
+    normalfilter: function () {
+      return this.account.supply_orders.filter((activeorder) => {
+        return activeorder.uid.match(new RegExp(`${this.search}`, "gi"));
+      });
+    },
     TotalValue: function () {
       let total = this.addorders.price * this.quantity;
       return total;

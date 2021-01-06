@@ -215,6 +215,13 @@ export default {
   async created() {
     // fetch the data pag ka load
     this.getSupplies();
+
+    setInterval(
+      function () {
+        this.getSupplies();
+      }.bind(this),
+      500
+    );
   },
   methods: {
     async getSupplies() {
