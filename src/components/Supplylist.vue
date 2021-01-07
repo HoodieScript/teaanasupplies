@@ -229,7 +229,8 @@ export default {
         `https://api.tea-ana.com/v1/supplies?select=id,name,price,type,imagePath,categoryId` //endpoint
       );
       this.supplies = response.data.data;
-      console.log(this.supplies);
+      /*       console.log(this.supplies);
+       */
     },
 
     async orderSupply(id) {

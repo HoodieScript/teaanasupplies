@@ -122,7 +122,13 @@ export default {
   async created() {
     // fetch the data pag ka load
     this.getProfile();
-    this.getActiveOrders();
+
+    setInterval(
+      function () {
+        this.getActiveOrders();
+      }.bind(this),
+      500
+    );
   },
   methods: {
     getProfile: async function () {

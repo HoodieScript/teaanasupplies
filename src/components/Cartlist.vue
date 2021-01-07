@@ -36,7 +36,11 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form method="post" @submit.prevent="updateCart(eachofcart.id)">
+                <form
+                  class="row"
+                  method="post"
+                  @submit.prevent="updateCart(eachofcart.id)"
+                >
                   <!--    <div class="form-group">
                     <img
                       class="img img-fluid w-75 m-auto border-0 form-control"
@@ -103,7 +107,7 @@
                   <img
                     class="img img-fluid w-75 m-auto border-0 form-control"
                     alt="Tea-ana-product"
-                    style="height: auto"
+                    style="height: 120px; width: 200px"
                     :src="path + cartlist.supply.imagePath"
                     fluid
                   />
@@ -221,13 +225,11 @@ export default {
     };
   },
   async created() {
-    this.getSuppliescart();
-
     setInterval(
       function () {
         this.getSuppliescart();
       }.bind(this),
-      500
+      1000
     );
   },
   methods: {
@@ -246,7 +248,6 @@ export default {
         `https://api.tea-ana.com/v1/cart/supplies` //endpoint
       );
       this.cartlists = response.data.cart;
-      console.log(this.cartlists);
     },
 
     Deletecart: async function (id) {
@@ -272,7 +273,7 @@ export default {
     },
     updateCart: async function (id) {
       axios
-        .get(`https://api.tea-ana.com/v1/cart/supplies/item/` + id, {
+        .put(`https://api.tea-ana.com/v1/cart/supplies/item/` + id, {
           quantity: this.eachofcart.quantity,
         })
         .then((response) => {
@@ -370,7 +371,8 @@ td:nth-child(4) {
   background-color: #444;
 }
 @media only screen and (max-width: 992px) {
-  table.mycart td:nth-child(1) {
+  table.mycart td:nth-child(1),
+  th:nth-child(1) {
     display: none !important;
   }
   table td {
